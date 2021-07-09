@@ -1,0 +1,14 @@
+name: StructureCompass
+version: ${project.version}
+main: me.polishkrowa.structurecompass.StructureCompass
+api-version: 1.17
+
+commands:
+  structure-compass:
+    aliases: [sc, s-c]
+    permission: structure-compass.use
+
+permissions:
+  structure-compass.use:
+    default: op
+    description: "Allows usage of the command"
