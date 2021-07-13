@@ -1,5 +1,5 @@
 # StructureCompass
-This spigot plugin gives a compass to track a certain structure type! The commpass can have a "give" price and the plugin also supports [Vault](https://www.spigotmc.org/resources/vault.34315/).
+This spigot plugin gives a compass to track a certain structure type! The compass can have a "give" price and the plugin also supports [Vault](https://www.spigotmc.org/resources/vault.34315/).
 
 Permissions:
  - structure-compass.use: Required to use the plugin command. True by default.
