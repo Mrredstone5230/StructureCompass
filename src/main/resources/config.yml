@@ -1,0 +1,9 @@
+# Put true if you want to use vault
+use-vault: false
+
+# The item type of the price. Put none if you want no price.
+# This is ignored if Vault is used.
+price-type: "none"
+
+# This is the amount of items if vault is disabled. Otherwise, this is the amount of money required with Vault.
+price-amount: 0

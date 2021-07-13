@@ -1,13 +1,15 @@
 package me.polishkrowa.structurecompass;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.StructureType;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CompassMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ public class StructureCompassCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if (args == null || args.length == 0) {
+        if (args == null || args.length == 0 || args[0].equalsIgnoreCase("help")) {
             player.sendMessage(ChatColor.RED + "Usage: /structure-compass <structure-type> [only-not-found]");
             return true;
         }
@@ -40,29 +42,56 @@ public class StructureCompassCommand implements CommandExecutor, TabCompleter {
         StructureType structureType = StructureType.getStructureTypes().get(structureName.toLowerCase());
 
 
-        boolean useUnexplored;
+        boolean useUnexploredOnly;
         if (args.length == 1) {
-            useUnexplored = false;
+            useUnexploredOnly = false;
         } else {
             if (!args[1].equalsIgnoreCase("true") && !args[1].equalsIgnoreCase("false")) {
                 player.sendMessage(ChatColor.RED + "Incorrect true/false value for second argument. Usage: /structure-compass <structure-type> [only-not-found]");
                 return true;
             }
-            useUnexplored = Boolean.parseBoolean(args[1]);
+            useUnexploredOnly = Boolean.parseBoolean(args[1]);
         }
 
 
-        Location structureLoc = player.getWorld().locateNearestStructure(player.getLocation(), structureType, 200000, useUnexplored);
+        Location structureLoc = player.getWorld().locateNearestStructure(player.getLocation(), structureType, 200000, useUnexploredOnly);
 
         if (structureLoc == null) {
             player.sendMessage(ChatColor.RED + "No structures of that type have been found near you.");
             return true;
         }
 
-        player.sendMessage(structureLoc.toVector().toString());
-        //TODO Give a compass with loc hardcoded
+        //player.sendMessage(structureLoc.toVector().toString());
 
-        //? ///// if true OR scan always if false.
+        NamespacedKey key = StructureCompass.getKey();
+        ItemStack item = new ItemStack(Material.COMPASS);
+        CompassMeta meta = (CompassMeta) item.getItemMeta();
+        if (useUnexploredOnly)
+            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "null");
+        else
+            meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, structureType.getName());
+        meta.setLodestoneTracked(false);
+        meta.setLodestone(structureLoc);
+
+        if (useUnexploredOnly)
+            meta.setDisplayName("Undetected " + structureType.getName().toLowerCase() + " location");
+        else {
+            meta.setDisplayName("Nearest " + structureType.getName().toLowerCase());
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GRAY + "This compass will track");
+            lore.add(ChatColor.GRAY + "the nearest structure of");
+            lore.add(ChatColor.GRAY + "the specified type. Update");
+            lore.add(ChatColor.GRAY + "tracker with right click.");
+            meta.setLore(lore);
+        }
+
+        item.setItemMeta(meta);
+
+        Location playerLoc = player.getLocation().clone();
+        playerLoc.add(-0.5, -0.3, -0.5);
+        Item itemEntity = player.getWorld().dropItemNaturally(playerLoc, item);
+        itemEntity.setOwner(player.getUniqueId());
+        itemEntity.setPickupDelay(-1);
         return true;
     }
 

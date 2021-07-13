@@ -2,6 +2,8 @@ name: StructureCompass
 version: ${project.version}
 main: me.polishkrowa.structurecompass.StructureCompass
 api-version: 1.17
+softdepend:
+  - Vault
 
 commands:
   structure-compass:
