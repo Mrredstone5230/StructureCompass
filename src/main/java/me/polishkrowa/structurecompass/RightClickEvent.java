@@ -1,7 +1,6 @@
 package me.polishkrowa.structurecompass;
 
 import org.bukkit.*;
-import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -48,9 +47,12 @@ public class RightClickEvent implements Listener {
             return;
         }
 
-        meta.setLodestone(structureLoc);
-        item.setItemMeta(meta);
+        if (!structureLoc.toVector().toString().equals(meta.getLodestone().toVector().toString())) {
+            meta.setLodestone(structureLoc);
+            item.setItemMeta(meta);
 
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Position updated !");
+            event.getPlayer().sendMessage(ChatColor.GREEN + "Position updated !");
+        }
+
     }
 }

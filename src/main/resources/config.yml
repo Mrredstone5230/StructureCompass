@@ -1,9 +1,34 @@
+### ENABLED STRUCTURES
+#This is the list of enabled structures. See https://minecraft.fandom.com/wiki/Commands/locate#Arguments in the Java Edition column for valid structure types.
+structures:
+  - bastion_remnant
+  - desert_pyramid
+  - endcity
+  - fortress
+  - igloo
+  - jungle_pyramid
+  - mansion
+  - mineshaft
+  - monument
+  - nether_fossil
+  - ocean_ruin
+  - pillager_outpost
+  - ruined_portal
+  - shipwreck
+  - swamp_hut
+  - village
+
+
+### COMPASS PRICE
+
 # Put true if you want to use vault
 use-vault: false
 
-# The item type of the price. Put none if you want no price.
-# This is ignored if Vault is used.
-price-type: "none"
-
 # This is the amount of items if vault is disabled. Otherwise, this is the amount of money required with Vault.
+# Put 0 to disable the price feature.
 price-amount: 0
+
+# The item type of the price. This is ignored if Vault is used.
+# List of correct entries: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html (Use the "Enum Constant" column)
+price-item-type: DIAMOND
+

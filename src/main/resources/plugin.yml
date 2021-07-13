@@ -12,5 +12,8 @@ commands:
 
 permissions:
   structure-compass.use:
-    default: op
+    default: true
     description: "Allows usage of the command"
+  structure-compass.reload:
+    default: op
+    description: "Allows usage of the command /structure-compass reload"
